@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    ports:
+      - "1883:1883"  # MQTT Port
+      - "9001:9001"  # WebSocket Port (optional)
+    volumes:
+      - ../mosquitto-config:/mosquitto/config
+      - ../mosquitto-data:/mosquitto/data
+      - ../mosquitto-log:/mosquitto/log
+    restart: always
+    networks:
+      - mosquitto-network
+    environment:
+      - TZ=Asia/Bangkok
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+networks:
+  mosquitto-network:
+    name: mosquitto-network
+    driver: bridge
